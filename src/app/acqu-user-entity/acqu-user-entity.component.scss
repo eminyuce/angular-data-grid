@@ -1,0 +1,340 @@
+/* General Styles */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container Styling */
+.container {
+  width: 95%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+/* Message Section */
+.container .message {
+  font-size: 1rem;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.container .message.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.container .message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Control Panel */
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex.justify-between {
+  justify-content: space-between;
+}
+
+.flex.gap-2 > * {
+  margin-right: 8px;
+}
+
+button {
+  font-size: 0.875rem;
+}
+
+/* Form Section */
+mat-card {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.flex.justify-end {
+  justify-content: flex-end;
+}
+
+/* Table Section */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table thead th {
+  background-color: #3f51b5;
+  color: white;
+  text-align: left;
+  padding: 0.75rem;
+  font-weight: bold;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #f1f1f1;
+}
+
+table tbody tr:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+table th,
+table td {
+  padding: 0.75rem;
+  text-align: left;
+}
+
+mat-paginator {
+  margin-top: 1rem;
+}
+
+/* Action Buttons */
+button.mat-icon-button {
+  color: #3f51b5;
+}
+
+button.mat-icon-button:hover {
+  color: #1e3a8a;
+}
+
+.mat-icon {
+  font-size: 1.25rem;
+}
+
+/* Select Dropdown */
+mat-form-field {
+  margin: 1rem 0;
+}
+
+.mat-select {
+  background-color: white;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .grid.grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .flex.justify-between {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+.filter-container {
+  margin-bottom: 20px;
+ 
+}
+.filter-container label {
+  margin-right: 10px;
+}
+.filter-container select, .filter-container input {
+  margin-right: 10px;
+}
+.filter-container button {
+  padding: 5px 10px;
+}
+
+.filter-container select {
+  width: auto;
+  padding: 5px 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* Corrected from 'boxing-size' to 'box-sizing' */
+}
+
+input[type=text], input[type=number], input[type=date], input[type=datetime-local] {
+  width: auto;
+  padding: 12px 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box; /* Corrected from 'boxing-size' to 'box-sizing' */
+}
+
+.filter-item {
+  background-color: grey;
+  color: white;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.remove-btn {
+  color: #fff;
+  background-color: #dc3545;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: darkred;
+}
+
+.filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust the gap between filters as needed */
+  padding: 0;
+  list-style-type: none;
+}
+
+
+/* Style for the table header */
+.custom-header-cell {
+  font-weight: bold;
+  background-color: #f5f5f5; /* Light grey background */
+  color: #333; /* Dark text for contrast */
+}
+
+/* Optional: Add some padding for better appearance */
+.custom-header-cell {
+  padding: 12px;
+}
+
+/* Custom styles for action buttons */
+.action-button {
+  color: #fff; /* White text */
+  background-color: #1976d2; /* Material blue for primary buttons */
+  border-radius: 20%; /* Circular buttons */
+  width: 40px; /* Fixed width */
+  height: 40px; /* Fixed height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 4px; /* Space between buttons */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for a raised effect */
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #1565c0; /* Darker blue on hover */
+}
+
+.action-button.mat-icon-button {
+  padding: 0; /* Remove default padding for icon buttons */
+}
+
+.custom-textbox {
+  width: 100%;
+  padding: 4px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Container for the dropdown and Update Status button */
+.bulk-status-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between dropdown and button */
+}
+
+/* Narrowing down the mat-select */
+.bulk-status-select {
+  width: 150px; /* Adjust this width to make the dropdown narrower */
+}
+
+/* Styling for the Update Status button */
+.update-status-btn {
+  padding: 0 16px; /* Adding padding to the Update Status button */
+}
+
+/* Container for the action buttons */
+.button-group {
+  margin-top: 16px;
+  display: flex;
+  gap: 8px; /* Space between action buttons */
+}
+
+/* Padding for action buttons */
+.action-btn {
+  padding: 0 12px; /* Add padding to each button */
+}
+
+/* Base styles for the message box */
+.message-box {
+  display: flex;
+  align-items: center;
+  font-size: 18px; /* Increased font size for better readability */
+  font-weight: 500;
+  color: #333; /* Dark gray text for better contrast */
+  padding: 15px 20px; /* Padding for more space inside the box */
+  border-radius: 8px; /* Rounded corners for a soft look */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  margin-bottom: 16px; /* Space between messages */
+  background-color: #fff; /* White background for contrast */
+  max-width: 100%; /* Ensure the box doesn't overflow */
+  word-wrap: break-word; /* Wrap text in case it's too long */
+}
+
+/* Style for the icon */
+.message-box .mat-icon {
+  margin-right: 12px; /* More space between icon and message */
+  font-size: 24px; /* Slightly larger icon for better visibility */
+  color: inherit; /* Inherit color from the parent for consistent styling */
+}
+
+/* Success Message */
+.success {
+  background-color: #e8f5e9; /* Light green background */
+  border-left: 6px solid #4caf50; /* Darker green border for emphasis */
+  color: #388e3c; /* Dark green text for success */
+}
+
+/* Error Message */
+.error {
+  background-color: #ffebee; /* Light red background */
+  border-left: 6px solid #f44336; /* Darker red border */
+  color: #d32f2f; /* Dark red text for errors */
+}
+
+/* Info Message */
+.info {
+  background-color: #e3f2fd; /* Light blue background */
+  border-left: 6px solid #2196f3; /* Darker blue border */
+  color: #1976d2; /* Dark blue text for info */
+}
+
+/* Warning Message */
+.warning {
+  background-color: #fff8e1; /* Light yellow background */
+  border-left: 6px solid #ff9800; /* Darker yellow-orange border */
+  color: #f57c00; /* Dark orange text for warnings */
+}

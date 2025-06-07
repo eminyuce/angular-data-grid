@@ -1,0 +1,264 @@
+<div class="container mx-auto p-4">
+<!-- Message Section -->
+<div *ngIf="message" [class]="messageClass" class="message-box p-4 mb-4 rounded">
+  <mat-icon *ngIf="messageClass === 'success'" aria-hidden="true">check_circle</mat-icon>
+  <mat-icon *ngIf="messageClass === 'error'" aria-hidden="true">error</mat-icon>
+  <mat-icon *ngIf="messageClass === 'info'" aria-hidden="true">info</mat-icon>
+  <mat-icon *ngIf="messageClass === 'warning'" aria-hidden="true">warning</mat-icon>
+  <span>{{ message }}</span>
+</div>
+
+
+  <!-- Control Panel -->
+  <div class="flex justify-between mb-4">
+    <button mat-raised-button color="primary" (click)="toggleForm()">
+      {{ showForm ? 'Hide Form' : 'Add New' }}
+    </button>
+  
+  </div>
+ 
+  <!-- Form Section -->
+  <mat-card *ngIf="showForm" class="mb-4">
+    <mat-card-content>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-2 gap-4">
+          <mat-form-field>
+            <mat-label>User Name</mat-label>
+            <input matInput formControlName="userName">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>User Email</mat-label>
+            <input matInput formControlName="userEmail">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Phone Model</mat-label>
+            <input matInput formControlName="phoneModel">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>User Description</mat-label>
+            <textarea matInput formControlName="userDescription"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="flex justify-end mt-4">
+          <button mat-raised-button color="primary" type="submit">
+            {{ editMode ? 'Update' : 'Add' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+ 
+<mat-card class="mb-4">
+  <mat-card-header>
+    <mat-card-title>Search Filters</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <!-- Filter Section -->
+    <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+      <div fxLayout="row wrap" fxLayoutGap="5px">
+        <div class="filter-container">
+          <label for="searchField">Search Field:</label>
+          <select id="searchField" [(ngModel)]="searchField">
+            <option *ngFor="let option of searchFieldOptions" [value]="option.value">{{ option.display }}</option>
+          </select>
+          
+          <label for="searchType">Search Type:</label>
+          <select id="searchType" [(ngModel)]="searchType">
+            <option *ngFor="let option of searchTypeOptions" [value]="option.value">{{ option.display }}</option>
+          </select>
+          
+          <label for="searchValue">Search Value:</label>
+          <input *ngIf="searchField !== 'textBox'" type="text" id="searchValue" [(ngModel)]="searchValue" placeholder="Enter search value">
+          <button mat-raised-button color="primary" (click)="addFilter()">
+            Add Filter
+          </button>
+          <button mat-raised-button color="warn" (click)="loadData()">
+            Search Data Based On Filters and Date Range
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date Filter Section -->
+    <div class="flex gap-4 mb-4">
+      <mat-form-field appearance="fill">
+        <mat-label>From Created Date</mat-label>
+        <input matInput [matDatepicker]="createdFromPicker" placeholder="Choose a date" [(ngModel)]="createdFrom">
+        <mat-datepicker-toggle matSuffix [for]="createdFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #createdFromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>To Created Date</mat-label>
+        <input matInput [matDatepicker]="createdToPicker" placeholder="Choose a date" [(ngModel)]="createdTo">
+        <mat-datepicker-toggle matSuffix [for]="createdToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #createdToPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>From Updated Date</mat-label>
+        <input matInput [matDatepicker]="updatedFromPicker" placeholder="Choose a date" [(ngModel)]="updatedFrom">
+        <mat-datepicker-toggle matSuffix [for]="updatedFromPicker"></mat-datepicker-toggle>
+        <mat-datepicker #updatedFromPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>To Updated Date</mat-label>
+        <input matInput [matDatepicker]="updatedToPicker" placeholder="Choose a date" [(ngModel)]="updatedTo">
+        <mat-datepicker-toggle matSuffix [for]="updatedToPicker"></mat-datepicker-toggle>
+        <mat-datepicker #updatedToPicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Filters List -->
+    <div class="row ml-0 m-2">
+      <div class="col">
+        <ul class="filter-list">
+          <li *ngFor="let filter of filters; let i = index" class="filter-item">
+            {{ fieldTxt(filter.field) }} {{ operationTxt(filter.operator) }} {{ filter.value }}
+            <button class="btn btn-secondary remove-btn" (click)="removeFilter(i)">X</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+   <!-- Bulk Status Update Section -->
+<div class="bulk-status-container">
+  <mat-form-field class="bulk-status-select">
+    <mat-label>Bulk Status</mat-label>
+    <mat-select [(ngModel)]="bulkStatus">
+      <mat-option value="DELETED">DELETED</mat-option>
+      <mat-option value="FROZEN">FROZEN</mat-option>
+      <mat-option value="LIVE">LIVE</mat-option>
+      <mat-option value="TEST">TEST</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="updateBulkStatus()" class="update-status-btn">
+    Update Status
+  </button>
+  <button mat-raised-button color="warn" (click)="deleteDeletedRecords()" class="action-btn">
+    Delete DELETED Records
+  </button>
+  <button mat-raised-button color="accent" (click)="exportToExcel()" class="action-btn">
+    Export to Excel
+  </button>
+  <button mat-raised-button (click)="reloadData()" class="action-btn">
+    Reload Data
+  </button>
+</div>
+
+  
+
+  <!-- Data Table Section -->
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [checked]="isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <!-- User Entity ID Column -->
+        <ng-container matColumnDef="userEntityId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">
+            ID
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.userEntityId }}</td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="custom-header-cell">Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <button   class="action-button" (click)="editRecord(element)">
+              edit
+            </button>
+            <button  class="action-button" (click)="viewDetails(element)">
+              info
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- User Name Column -->
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">
+            User Name
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
+        </ng-container>
+
+        <!-- User Email Column -->
+        <ng-container matColumnDef="userEmail">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">User Email</th>
+          <td mat-cell *matCellDef="let element">{{ element.userEmail }}</td>
+        </ng-container>
+
+        <!-- Phone Model Column -->
+        <ng-container matColumnDef="phoneModel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Phone Model</th>
+          <td mat-cell *matCellDef="let element">{{ element.phoneModel }}</td>
+        </ng-container>
+
+        <!-- User Description Column -->
+      <ng-container matColumnDef="userDescription">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">
+          User Description
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <input 
+            type="text" 
+            [(ngModel)]="element.userDescription" 
+            class="custom-textbox" 
+            placeholder="Enter description" />
+        </td>
+      </ng-container>
+
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Status</th>
+          <td mat-cell *matCellDef="let element" [ngStyle]="{'background-color': getStatusColor(element.status)}">
+            {{ element.status }}
+          </td>
+        </ng-container>
+
+        <!-- Created Date Column -->
+        <ng-container matColumnDef="createdDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Created Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.createdDate | date:'MM/dd/yyyy' }}</td>
+        </ng-container>
+
+        <!-- Updated Date Column -->
+        <ng-container matColumnDef="updatedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Updated Date</th>
+          <td mat-cell *matCellDef="let element">{{ element.updatedDate | date:'MM/dd/yyyy' }}</td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+ 
+      <mat-paginator [length]="dataSource.data.length"
+               [pageSize]="defaultPageSize"
+               [pageSizeOptions]="defaultPageSizeOptions">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+
+
+</div>

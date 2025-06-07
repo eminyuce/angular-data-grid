@@ -1,0 +1,73 @@
+I have a java entity below, I want to deveop a page for it so that the page will have form so user can enter a new data, 
+
+it will display its listing under the form as material data-grid, data-grid will have filtering with type as field name, operator such as like,equal,contains, not equals and value as input of filter and also filtering for created date range as two inputs of date time picker or  filtering for updated date range  as two inputs of date time picker
+
+the form will have validation for phoneModel and userEmail, email format is required and phoneModel will be only text, required, uppercase
+user_description can accept html content because it will be html editor
+ 
+
+data-grid will have edit button for each record so it will reload data to form again so user can edit the record and for each operation, there will be a message/info section at the top of it so user will get notification from it, the data-grid will have sorting, paging as well,
+
+data-grid and form will be expandable so the user will not see the form all the time, there will be button at the top named 'ADD' so once user clicks it, it will expand its form, 
+
+data-grid will have checkbox for each records so that user can change record status, the user will select a status from dropdown in option such as 'DELETED' or 'FROZEN' or 'LIVE' or 'TEST' and click a button to change status all selected checkbox records  
+
+data-grid will display different color for each status of record
+
+data-grid will have a button to see detail of the record as popup next to checkbox
+data-grid will have  pagination to handle large datasets efficiently, allowing users to navigate through pages of records.
+
+data-grid will have dropdowns for each phoneModel field of record so user can edit/reselect it again so that user can update entire table once entirely, the dropdowns values are coming from backend java controller services so it will be dynamic
+
+there will be another button to delete all DELETED status record and pop up message will come up as confirmation button so user can make user it is correct thing to do for deletion
+
+there will be export functionality button to get excel of data-grid with its selected filter
+
+◦	Add comprehensive error handling to display meaningful messages to the user in case of validation errors or server issues.
+Maintain an audit trail to track changes made to each record, showing who made the changes and when.
+
+Implement role-based access control (RBAC) to restrict access to certain functionalities based on user roles.
+
+Implement a global search bar to search across all fields of the records on the top of data-grid such as a textbox for search value and search button
+
+@Entity
+@Table(name = "AcquUserEntity")
+@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
+public class AcquUserEntity implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "user_entity_id")
+    private String userEntityId;
+
+    @Column(name = "user_name")
+    private String userName;
+	
+	@Column(name = "user_email")
+    private String userEmail;
+
+    @Column(name = "phone_model")
+    private String phoneModel;
+	
+	@Column(name = "user_description")
+    private String userDescription;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @Column(name = "updated_date")
+    private Date updatedDate;
+
+}

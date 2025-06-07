@@ -1,0 +1,139 @@
+<div class="container mx-auto p-4">
+    <!-- Message Section -->
+    <div *ngIf="message" [class]="messageClass" class="message-box p-4 mb-4 rounded">
+      <mat-icon *ngIf="messageClass === 'success'" aria-hidden="true">check_circle</mat-icon>
+      <mat-icon *ngIf="messageClass === 'error'" aria-hidden="true">error</mat-icon>
+      <mat-icon *ngIf="messageClass === 'info'" aria-hidden="true">info</mat-icon>
+      <mat-icon *ngIf="messageClass === 'warning'" aria-hidden="true">warning</mat-icon>
+      <span>{{ message }}</span>
+    </div>
+  
+    <!-- Filter Section -->
+    <mat-card class="mb-4">
+      <mat-card-header>
+        <mat-card-title>Search Filters</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+          <div fxLayout="row wrap" fxLayoutGap="5px">
+            <div class="filter-container">
+              <label for="searchField">Search Field:</label>
+              <select id="searchField" [(ngModel)]="searchField">
+                <option *ngFor="let option of searchFieldOptions" [value]="option.value">{{ option.display }}</option>
+              </select>
+  
+              <label for="searchType">Search Type:</label>
+              <select id="searchType" [(ngModel)]="searchType">
+                <option *ngFor="let option of searchTypeOptions" [value]="option.value">{{ option.display }}</option>
+              </select>
+  
+              <label for="searchValue">Search Value:</label>
+              <input type="text" id="searchValue" [(ngModel)]="searchValue" placeholder="Enter search value">
+              <button mat-raised-button color="primary" (click)="addFilter()">
+                Add Filter
+              </button>
+              <button mat-raised-button color="warn" (click)="loadData()">
+                Search Data Based On Filters and Date Range
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Date Filter Section -->
+        <div class="flex gap-4 mb-4">
+          <mat-form-field appearance="fill">
+            <mat-label>From Timestamp</mat-label>
+            <input matInput [matDatepicker]="timestampFromPicker" placeholder="Choose a date" [(ngModel)]="timestampFrom">
+            <mat-datepicker-toggle matSuffix [for]="timestampFromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #timestampFromPicker></mat-datepicker>
+          </mat-form-field>
+  
+          <mat-form-field appearance="fill">
+            <mat-label>To Timestamp</mat-label>
+            <input matInput [matDatepicker]="timestampToPicker" placeholder="Choose a date" [(ngModel)]="timestampTo">
+            <mat-datepicker-toggle matSuffix [for]="timestampToPicker"></mat-datepicker-toggle>
+            <mat-datepicker #timestampToPicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+  
+        <!-- Filters List -->
+        <div class="row ml-0 m-2">
+          <div class="col">
+            <ul class="filter-list">
+              <li *ngFor="let filter of filters; let i = index" class="filter-item">
+                {{ fieldTxt(filter.field) }} {{ operationTxt(filter.operator) }} {{ filter.value }}
+                <button class="btn btn-secondary remove-btn" (click)="removeFilter(i)">X</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Data Table Section -->
+    <mat-card>
+      <mat-card-content>
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+  
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="custom-header-cell">Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <button class="action-button" (click)="viewDetails(element)">
+                info
+              </button>
+            </td>
+          </ng-container>
+  
+          <!-- Application Name Column -->
+          <ng-container matColumnDef="applicationName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">
+              Application Name
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.applicationName }}</td>
+          </ng-container>
+  
+          <!-- Log Level Column -->
+          <ng-container matColumnDef="logLevel">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Log Level</th>
+            <td mat-cell *matCellDef="let element">{{ element.logLevel }}</td>
+          </ng-container>
+  
+          <!-- Log Message Column -->
+          <ng-container matColumnDef="logMessage">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Log Message</th>
+            <td mat-cell *matCellDef="let element">{{ element.logMessage }}</td>
+          </ng-container>
+  
+          <!-- Timestamp Column -->
+          <ng-container matColumnDef="timestamp">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="custom-header-cell">Timestamp</th>
+            <td mat-cell *matCellDef="let element">{{ formatDate(element.timestamp) }}</td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+  
+        <mat-paginator [length]="dataSource.data.length"
+                       [pageSize]="defaultPageSize"
+                       [pageSizeOptions]="defaultPageSizeOptions">
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
