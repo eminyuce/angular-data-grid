@@ -25,10 +25,10 @@ jobs:
       - name: Build Angular app
         run: |
           npm run build -- --configuration production --base-href /angular-data-grid/
-          touch dist/angular-data-grid/.nojekyll
+          touch dist/practive-project-ui-angular/.nojekyll
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/angular-data-grid
+          folder: dist/practive-project-ui-angular
